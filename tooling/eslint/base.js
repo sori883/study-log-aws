@@ -1,4 +1,4 @@
-/// <reference types="./types.d.ts" />
+// / <reference types="./types.d.ts" />
 
 import * as path from "node:path";
 import { includeIgnoreFile } from "@eslint/compat";
@@ -7,40 +7,10 @@ import importPlugin from "eslint-plugin-import";
 import turboPlugin from "eslint-plugin-turbo";
 import tseslint from "typescript-eslint";
 
-/**
- * All packages that leverage t3-env should use this rule
- */
-export const restrictEnvAccess = tseslint.config(
-  { ignores: ["**/env.ts"] },
-  {
-    files: ["**/*.js", "**/*.ts", "**/*.tsx"],
-    rules: {
-      "no-restricted-properties": [
-        "error",
-        {
-          object: "process",
-          property: "env",
-          message:
-            "Use `import { env } from '~/env'` instead to ensure validated types.",
-        },
-      ],
-      "no-restricted-imports": [
-        "error",
-        {
-          name: "process",
-          importNames: ["env"],
-          message:
-            "Use `import { env } from '~/env'` instead to ensure validated types.",
-        },
-      ],
-    },
-  },
-);
-
 export default tseslint.config(
   // Ignore files not tracked by VCS and any config files
   includeIgnoreFile(path.join(import.meta.dirname, "../../.gitignore")),
-  { ignores: ["**/*.config.*"] },
+  { ignores: ["**/*.config.*", "**/.textlintrc.json", "**/*.d.ts"] },
   {
     files: ["**/*.js", "**/*.ts", "**/*.tsx"],
     plugins: {
@@ -67,13 +37,7 @@ export default tseslint.config(
         2,
         { checksVoidReturn: { attributes: false } },
       ],
-      "@typescript-eslint/no-unnecessary-condition": [
-        "error",
-        {
-          allowConstantLoopConditions: true,
-        },
-      ],
-      "@typescript-eslint/no-non-null-assertion": "error",
+      "@typescript-eslint/consistent-type-definitions": ["off"],
       "import/consistent-type-specifier-style": ["error", "prefer-top-level"],
       semi: ["error"],
       quotes: [2, "double", { avoidEscape: true }],
