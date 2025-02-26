@@ -131,3 +131,7 @@ dist
 
 # turbo repo
 .turbo
+
+# React Router
+.react-router/
+build/

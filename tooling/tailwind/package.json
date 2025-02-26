@@ -4,7 +4,6 @@
   "private": true,
   "type": "module",
   "exports": {
-    "./web": "./web.ts",
     "./util": "./util.ts"
   },
   "license": "MIT",

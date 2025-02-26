@@ -41,8 +41,11 @@
     }
   },
   "globalEnv": [
+    "NODE_ENV",
+    "DEV"
   ],
   "globalPassThroughEnv": [
-    "NODE_ENV"
+    "NODE_ENV",
+    "DEV"
   ]
 }
