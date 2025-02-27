@@ -1,0 +1,41 @@
+{
+  "name": "@acme/cdk",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "cdk": "bin/cdk.ts"
+  },
+  "scripts": {
+    "build": "tsx bin/cdk.ts",
+    "watch": "tsx -w",
+    "test": "jest",
+    "cdk": "cdk",
+    "clean": "rm -rf .turbo node_modules",
+    "format": "prettier --check . --ignore-path ../../.gitignore",
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@acme/eslint-config": "workspace:^",
+    "@acme/prettier-config": "workspace:^",
+    "@acme/tsconfig": "workspace:^",
+    "@types/jest": "^29.5.12",
+    "@types/node": "catalog:",
+    "aws-cdk": "^2.1000.0",
+    "dotenv-cli": "catalog:",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.5",
+    "ts-node": "^10.9.2",
+    "typescript": "catalog:"
+  },
+  "dependencies": {
+    "aws-cdk-lib": "^2.180.0",
+    "constructs": "^10.0.0",
+    "source-map-support": "^0.5.21"
+  },
+  "prettier": "@acme/prettier-config",
+  "volta": {
+    "node": "22.7.0"
+  }
+}

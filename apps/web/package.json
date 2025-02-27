@@ -30,7 +30,7 @@
     "@acme/tsconfig": "workspace:^",
     "@react-router/dev": "^7.2.0",
     "@tailwindcss/vite": "catalog:",
-    "@types/node": "^22.13.5",
+    "@types/node": "catalog:",
     "@types/react": "^19.0.1",
     "@types/react-dom": "^19.0.1",
     "eslint": "catalog:",
