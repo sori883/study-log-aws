@@ -7,14 +7,15 @@
     "cdk": "bin/cdk.ts"
   },
   "scripts": {
-    "build": "tsx bin/cdk.ts",
-    "watch": "tsx -w",
-    "test": "jest",
-    "cdk": "cdk",
+    "build": "pnpm with-env tsx bin/cdk.ts",
+    "watch": "pnpm with-env tsx -w",
+    "test": "pnpm with-env jest",
+    "cdk": "pnpm with-env cdk",
     "clean": "rm -rf .turbo node_modules",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "with-env": "dotenv -e ../../.env --"
   },
   "devDependencies": {
     "@acme/eslint-config": "workspace:^",

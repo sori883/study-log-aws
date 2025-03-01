@@ -42,10 +42,14 @@
   },
   "globalEnv": [
     "NODE_ENV",
-    "DEV"
+    "DEV",
+    "AWS_ACCOUNT_ID",
+    "AWS_REGION"
   ],
   "globalPassThroughEnv": [
     "NODE_ENV",
-    "DEV"
+    "DEV",
+    "AWS_ACCOUNT_ID",
+    "AWS_REGION"
   ]
 }

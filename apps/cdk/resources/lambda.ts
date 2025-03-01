@@ -1,6 +1,7 @@
 import type { Construct } from "constructs";
 import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as apigw from "aws-cdk-lib/aws-apigateway";
+import * as cdk from "aws-cdk-lib"
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -14,17 +15,21 @@ export class Lambda {
     // lambda
     const remixLambda = new lambda.DockerImageFunction(scope, "RemixFunction", {
       code: lambda.DockerImageCode.fromImageAsset(dockerPath, {}),
+      timeout: cdk.Duration.seconds(300),
     });
-    
-    // api gateway
-    new apigw.LambdaRestApi(scope, "RemixApi", {
-      handler: remixLambda,
-      binaryMediaTypes: ["*/*"],
-      deployOptions: {
-        stageName: "prod",
-        cachingEnabled: true,
-      },
-    });
+
+    // 一時的に関数URLでアクセスするようにする
+    remixLambda.addFunctionUrl({ authType: lambda.FunctionUrlAuthType.NONE });
+
+    // // api gateway
+    // new apigw.LambdaRestApi(scope, "RemixApi", {
+    //   handler: remixLambda,
+    //   binaryMediaTypes: ["*/*"],
+    //   deployOptions: {
+    //     stageName: "prod",
+    //     cachingEnabled: true,
+    //   },
+    // });
 
   } 
 }

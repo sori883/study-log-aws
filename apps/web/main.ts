@@ -1,9 +1,9 @@
+import { serve } from "@hono/node-server";
 import { serveStatic } from "@hono/node-server/serve-static";
 import handle from "hono-react-router-adapter/node";
 import * as build from "./build/server";
 import { getLoadContext } from "./load-context";
 import server from "./server";
-import { handle as lambdaHandle } from "hono/aws-lambda";
 
 server.use(
   serveStatic({
@@ -11,6 +11,5 @@ server.use(
   })
 );
 
-// Lambdaのエントリーポイント
-const reactRouterHandler = handle(build, server, { getLoadContext });
-export const handler = lambdaHandle(reactRouterHandler);
+const handler = handle(build, server, { getLoadContext });
+serve({ fetch: handler.fetch, port: 8080 });
