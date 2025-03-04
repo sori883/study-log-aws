@@ -44,12 +44,22 @@
     "NODE_ENV",
     "DEV",
     "AWS_ACCOUNT_ID",
-    "AWS_REGION"
+    "AWS_REGION",
+    "GOOGLE_CLIENT_ID",
+    "GOOGLE_CLIENT_SECRET",
+    "AUTH_CALLBACK_URL",
+    "AUTH_LOGOUT_URL",
+    "COGNITO_DOMAIN"
   ],
   "globalPassThroughEnv": [
     "NODE_ENV",
     "DEV",
     "AWS_ACCOUNT_ID",
-    "AWS_REGION"
+    "AWS_REGION",
+    "GOOGLE_CLIENT_ID",
+    "GOOGLE_CLIENT_SECRET",
+    "AUTH_CALLBACK_URL",
+    "AUTH_LOGOUT_URL",
+    "COGNITO_DOMAIN"
   ]
 }
