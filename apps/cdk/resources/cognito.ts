@@ -48,6 +48,7 @@ export class Cognito {
     // アプリクライアントの作成
     const userPoolClient = new cognito.UserPoolClient(scope, "UserPoolClient", {
       userPool: userPool,
+      generateSecret: true,
       authFlows: {
         userPassword: true,
         userSrp: true,
