@@ -21,7 +21,6 @@ export const action = async ({ request, context }: ActionFunctionArgs) => {
       });
 
     // Google認証ページにリダイレクト
-    console.log(`${cognitoAuthUrl}?${queryParams.toString()}`);
     return redirect(`${cognitoAuthUrl}?${queryParams.toString()}`);
 };
 
