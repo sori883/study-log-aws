@@ -102,6 +102,9 @@ importers:
       '@react-router/serve':
         specifier: ^7.2.0
         version: 7.2.0(react-router@7.2.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(typescript@5.7.3)
+      aws-jwt-verify:
+        specifier: ^5.0.0
+        version: 5.0.0
       hono:
         specifier: ^4.7.2
         version: 4.7.2
@@ -151,6 +154,9 @@ importers:
       '@types/react-dom':
         specifier: ^19.0.1
         version: 19.0.4(@types/react@19.0.10)
+      dotenv-cli:
+        specifier: 'catalog:'
+        version: 8.0.0
       eslint:
         specifier: 'catalog:'
         version: 9.21.0(jiti@2.4.2)
@@ -2163,6 +2169,10 @@ packages:
     resolution: {integrity: sha512-gHjItBSvwBxKqjnRrq14oQ7N9C1687GhW0A80UErnVEqjYWrYbGoSF2sDcM3zaGsdznDiKsuefZvDqCaDix+xw==}
     engines: {node: '>= 16.0.0'}
     hasBin: true
+
+  aws-jwt-verify@5.0.0:
+    resolution: {integrity: sha512-FQM5EYEm7AnVJ3oeTpvBZQm7hYnpI067Em1oopHBs7cCNAcw8Aw8NFbojFjkNXifsOzyYe1ks+bg7Q9fMsTZSA==}
+    engines: {node: '>=16.0.0'}
 
   axe-core@4.10.2:
     resolution: {integrity: sha512-RE3mdQ7P3FRSe7eqCWoeQ/Z9QXrtniSjp1wUjt5nRC3WIpz5rSCve6o3fsZ2aCpJtrZjSZgjwXAoTO5k4tEI0w==}
@@ -7098,6 +7108,8 @@ snapshots:
   aws-cdk@2.1000.0:
     optionalDependencies:
       fsevents: 2.3.2
+
+  aws-jwt-verify@5.0.0: {}
 
   axe-core@4.10.2: {}
 
