@@ -1,5 +1,5 @@
-import { ActionFunctionArgs, Form, redirect } from "react-router";
-import type { Route } from "../+types/home";
+import { Form, redirect } from "react-router";
+import type { Route } from "../auth/+types/login";
 
 
 export function meta({}: Route.MetaArgs) {
@@ -9,8 +9,8 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
-export const action = async ({ request, context }: ActionFunctionArgs) => {
-      // Google認証URLを構築
+export const action = async ({ request, context }: Route.ActionArgs) => {
+      // Google認証用エンドポイント
       const cognitoAuthUrl = `https://${process.env.COGNITO_DOMAIN}.auth.${process.env.AWS_REGION}.amazoncognito.com/oauth2/authorize`;
       const queryParams = new URLSearchParams({
         client_id: process.env.COGNITO_CLIENT_ID!,

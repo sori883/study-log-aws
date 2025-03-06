@@ -1,8 +1,7 @@
-import { LoaderFunctionArgs, redirect } from "react-router";
+import { redirect } from "react-router";
+import type { Route } from "../auth/+types/callback.google";
 
-
-
-export async function loader({ request, context }: LoaderFunctionArgs) {
+export async function loader({ request, context }: Route.LoaderArgs) {
   const requestUrl = new URL(request.url);
   const code = requestUrl.searchParams.get("code");
 
@@ -38,21 +37,21 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
     // アクセストークンをHTTPOnlyクッキーとして設定
     headers.append(
       "Set-Cookie",
-      `access_token=${tokens.access_token}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${tokens.expires_in}`
+      `access_token=${tokens.access_token}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=${tokens.expires_in}`
     );
     
     // リフレッシュトークンをHTTPOnlyクッキーとして設定 (存在する場合)
     if (tokens.refresh_token) {
       headers.append(
         "Set-Cookie",
-        `refresh_token=${tokens.refresh_token}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=2592000`
+        `refresh_token=${tokens.refresh_token}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=2592000`
       );
     }
     
     // IDトークンをHTTPOnlyクッキーとして設定
     headers.append(
       "Set-Cookie",
-      `id_token=${tokens.id_token}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${tokens.expires_in}`
+      `id_token=${tokens.id_token}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=${tokens.expires_in}`
     );
 
     // ホームページにリダイレクト

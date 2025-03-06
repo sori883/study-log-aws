@@ -7,4 +7,4 @@ export const jwtVerifier = CognitoJwtVerifier.create({
   clientId: process.env.COGNITO_CLIENT_ID!,
 });
 
-export type JwtPayload = CognitoIdTokenPayload;
+export type JwtPayloadType = CognitoIdTokenPayload;

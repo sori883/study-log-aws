@@ -1,22 +1,16 @@
 import { Hono } from "hono";
-import { getCookie } from "hono/cookie";
-import { jwtVerifier, JwtPayload } from '../auth/jwt';
-
+import { authMiddleware } from "./middleware/authMiddleware";
 
 const app = new Hono();
 
-app.use<{ Variables: { jwt: JwtPayload }}>(async (c, next) => {
-  // トークンの取得
-  const token = getCookie(c, "id_token");
-  if (!token) return c.redirect("/login");
-
-  // トークンの検証
-  await jwtVerifier.hydrate();
-  const jwtPayload = await jwtVerifier.verify(token);
-  c.set("jwt", jwtPayload);
-
+app.use("/", authMiddleware, async (c, next) => {
   await next();
-  c.header("X-Powered-By", "React Router and Hono");
+  c.header("X-Powered-By", "AuthMiddeleware");
+});
+
+app.use("/login", async (c, next) => {
+  await next();
+  c.header("X-Powered-By", "NoAuthMiddeleware");
 });
 
 export default app;
