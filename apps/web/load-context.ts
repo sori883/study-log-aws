@@ -7,12 +7,12 @@ type Env = {
   }
 };
 
-type GetLoadContextArgs = {
-  request: Request
+export type GetLoadContextArgs = {
   context: {
     hono: {
       context: Context<Env>
-    }
+    },
+    request: Request
   }
 };
 
@@ -29,9 +29,9 @@ declare module "react-router" {
 };
 
 export function getLoadContext(args: GetLoadContextArgs) {
-  const { context } = args;
   return {
-    ...context,
-    jwt: context.hono.context.get("jwt")
+    context: args.context,
+    jwt: args.context.hono.context.get("jwt")
   };
 };
+
