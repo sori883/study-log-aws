@@ -136,6 +136,10 @@ dist
 .react-router/
 build/
 
- CDK asset staging directory
+# CDK asset staging directory
 .cdk.staging
 cdk.out
+
+
+# drizzle
+drizzle/
