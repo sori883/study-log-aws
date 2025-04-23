@@ -9,4 +9,16 @@ const client = createClient({
 });
 
 
-export const dbClient = drizzle({ client, schema });
+export const db = drizzle({ client, schema });
+export * as schema from "./db/schema";
+
+// 別パッケージで使用するものをexport
+export * from "drizzle-orm";
+
+// export * from "drizzle-orm"だけではエクスポートされないので、個別にエクスポート
+export {
+  union,
+  unionAll,
+  intersect,
+  except,
+} from "drizzle-orm/sqlite-core";

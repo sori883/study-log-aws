@@ -1,37 +1,36 @@
 import type { Context } from "hono";
 import type { JwtPayloadType } from "./auth/jwt";
+import type { UserType } from "./app/db/user/getUser";
 
 type Env = {
   Variables: {
-    jwt: JwtPayloadType
+    user: UserType;
+    jwt: JwtPayloadType;
   }
 };
 
 export type GetLoadContextArgs = {
+  request: Request;
   context: {
     hono: {
       context: Context<Env>
     },
-    request: Request
   }
-};
-
-// JWTを補完する
-type jwtComplement = {
-  email: string;
 };
 
 // HonoのコンテキストをRemixに渡す
 declare module "react-router" {
   interface AppLoadContext extends ReturnType<typeof getLoadContext> {
-    jwt: JwtPayloadType & jwtComplement;
+    context: GetLoadContextArgs["context"];
+    user: UserType;
+    jwt: JwtPayloadType;
   }
 };
 
 export function getLoadContext(args: GetLoadContextArgs) {
   return {
     context: args.context,
-    jwt: args.context.hono.context.get("jwt")
+    user: args.context.hono.context.get("user"),
+    jwt: args.context.hono.context.get("jwt"),
   };
 };
-

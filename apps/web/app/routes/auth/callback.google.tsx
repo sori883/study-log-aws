@@ -1,5 +1,9 @@
 import { redirect } from "react-router";
 import type { Route } from "../auth/+types/callback.google";
+import { getUser } from "../../db/user/getUser";
+import { insertUser } from "../../db/user/insertUser";
+import { jwtVerifier } from "../../../auth/jwt";
+
 
 export async function loader({ request, context }: Route.LoaderArgs) {
   const requestUrl = new URL(request.url);
@@ -33,7 +37,19 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 
     const tokens = await response.json();
     const headers = new Headers();
-      
+
+    // JWTトークンからユーザデータをDBに登録
+    await jwtVerifier.hydrate();
+    const jwtPayload = await jwtVerifier.verify(tokens.id_token);
+
+    const user = await getUser({email: jwtPayload.email as string});
+    if (!user) {
+      await insertUser({
+        email: jwtPayload.email as string,
+        thumbnailUrl: jwtPayload.picture as string,
+      });
+    }
+    
     // アクセストークンをHTTPOnlyクッキーとして設定
     headers.append(
       "Set-Cookie",
@@ -61,5 +77,4 @@ export async function loader({ request, context }: Route.LoaderArgs) {
     // エラーメッセージを表示して、再度ログインページにリダイレクト
     return redirect("/login?error=authentication_failed");
   }
-
 };

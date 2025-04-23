@@ -1,6 +1,7 @@
 import { MiddlewareHandler } from "hono";
 import { getCookie, setCookie } from "hono/cookie";
 import { jwtVerifier, JwtPayloadType } from "../../auth/jwt";
+import { getUser, UserType } from "../../app/db/user/getUser";
 
 export type TokensType = {
   id_token: string;
@@ -12,6 +13,7 @@ export type TokensType = {
 export const authMiddleware: MiddlewareHandler<{
   Variables: {
     jwt: JwtPayloadType;
+    user: UserType;
   };
 }> = async (c, next) => {
   // リフレッシュトークンが存在しない場合はloginにリダイレクトする
@@ -60,14 +62,6 @@ export const authMiddleware: MiddlewareHandler<{
     };
   };
 
-  if (id_token) {
-    // トークンを検証してRemixに渡すためにコンテキストに詰める
-    await jwtVerifier.hydrate();
-    const jwtPayload = await jwtVerifier.verify(id_token);
-    c.set("jwt", jwtPayload);
-  };
-
-  await next();
   // トークンをクッキーに保存
   // tokensに値があるとき=トークンを再取得しているときだけCookieに保存
   if (tokens) {
@@ -86,4 +80,20 @@ export const authMiddleware: MiddlewareHandler<{
       maxAge: tokens.expires_in
     });
   };
+
+  if (id_token) {
+    await jwtVerifier.hydrate();
+    const jwtPayload = await jwtVerifier.verify(id_token);
+    // jwtPayloadをRemixに渡すためにコンテキストに詰める
+    c.set("jwt", jwtPayload);
+    // ユーザ情報を取得して、usernameが未設定だったらリダイレクト
+    const user = await getUser({email: jwtPayload.email as string})
+    if (!user?.username) {
+      return c.redirect("/auth/init");
+    }
+    c.set("user", user);
+  };
+
+
+  await next();
 };

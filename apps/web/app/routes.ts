@@ -6,4 +6,5 @@ export default [
   index("routes/home.tsx"),
   route("login", "routes/auth/login.tsx"),
   route("auth/google/callback", "routes/auth/callback.google.tsx"),
+  route("auth/init", "routes/auth/init.tsx"),
 ] satisfies RouteConfig;

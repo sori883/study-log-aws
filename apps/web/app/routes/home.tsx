@@ -9,7 +9,6 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export async function loader({ request, context }: Route.LoaderArgs) {
-  console.log(context.jwt.email);
 }
 
 export default function Home() {

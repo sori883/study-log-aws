@@ -14,4 +14,4 @@ server.use(
 
 // @ts-ignore
 const handler = handle(build, server, { getLoadContext });
-serve({ fetch: handler.fetch, port: 8080 });
+serve({ fetch: handler.fetch, port: 3010 });
