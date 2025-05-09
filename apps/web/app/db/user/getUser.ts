@@ -13,7 +13,7 @@ export async function getUser(data: z.infer<typeof getUserSchema>) {
     .select()
     .from(schema.usersTable)
     .where(eq(schema.usersTable.email, v.email))
-    .get();
+    .limit(1);
 
-    return user;
+    return user.length > 0 ? user : null;
 }

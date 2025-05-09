@@ -4,6 +4,7 @@ import { z } from "zod";
 const insertUserSchema = z.object({
   email: z.string().email(),
   thumbnailUrl: z.string(),
+  providerUsername: z.string(),
 });
 
 
@@ -15,5 +16,6 @@ export async function insertUser(data: z.infer<typeof insertUserSchema>) {
     .values({
       email: v.email,
       thumbnailUrl: v.thumbnailUrl,
+      providerUsername: v.providerUsername,
     });
 }

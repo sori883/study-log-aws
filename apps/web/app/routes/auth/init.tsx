@@ -11,7 +11,6 @@ export function meta({}: Route.MetaArgs) {
 export async function loader({ request, context }: Route.LoaderArgs) {
   // Honoでリダイレクトしているので、Cookieからid_tokenを取得する
   const id_token = cookie.parse(request.headers.get("Cookie") || "").id_token;
-  console.log(id_token)
 }
 
 export default function Init() {

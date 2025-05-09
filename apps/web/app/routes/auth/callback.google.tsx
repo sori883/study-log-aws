@@ -47,6 +47,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
       await insertUser({
         email: jwtPayload.email as string,
         thumbnailUrl: jwtPayload.picture as string,
+        providerUsername: jwtPayload["cognito:username"] as string,
       });
     }
     

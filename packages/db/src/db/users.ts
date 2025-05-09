@@ -1,14 +1,23 @@
 import { sql } from "drizzle-orm";
-import { createCaTable } from "./_table";
-import { integer, text } from "drizzle-orm/sqlite-core";
+import { createTable } from "./_table";
+import { pgPolicy, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
+import { approle } from "./role";
 
-export const usersTable = createCaTable("users_table", {
-  id: integer("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
-  username: text("username").unique(),
-  displayName: text("display_name"),
-  email: text("email").notNull().unique(),
-  thumbnailUrl: text("thumbnail_url"),
-  createdAt: text().default(sql`(CURRENT_TIMESTAMP)`).notNull(),
-  updatedAt: text("updated_at").$onUpdate(() => sql`(CURRENT_TIMESTAMP)`),
-  deletedAt: text("deleted_at").default(sql`NULL`),
-});
+export const usersTable = createTable("users_table", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  username: varchar ("username").unique(),
+  displayName: varchar ("display_name").default(sql`NULL`),
+  email: varchar ("email").notNull().unique(),
+  thumbnailUrl: varchar ("thumbnail_url"),
+  providerUsername: varchar ("provider_username"),
+  createdAt: timestamp().defaultNow(),
+  updatedAt: timestamp("updated_at").$onUpdate(() => new Date()),
+  deletedAt: timestamp("deleted_at").default(sql`NULL`),
+}, (t) => [
+	pgPolicy("policy", {
+		as: "permissive",
+		to: approle,
+		for: 'all',
+		using: sql`TRUE`,
+	}),
+]);
