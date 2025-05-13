@@ -1,5 +1,5 @@
 {
-  "id": "22380dd8-7f04-4c4e-a1b8-6e279f88d0f7",
+  "id": "2e9ebeba-c2b0-461e-b7e1-33415dd95d92",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -25,7 +25,8 @@
           "name": "display_name",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "default": "NULL"
         },
         "email": {
           "name": "email",

@@ -1,2 +1,0 @@
-ALTER TABLE "study_aws_users_table" ENABLE ROW LEVEL SECURITY;--> statement-breakpoint
-CREATE POLICY "policy" ON "study_aws_users_table" AS PERMISSIVE FOR ALL TO "approle" USING (TRUE) WITH CHECK (TRUE);

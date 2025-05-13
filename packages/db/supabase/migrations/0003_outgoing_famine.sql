@@ -1,1 +1,0 @@
-ALTER POLICY "policy" ON "study_aws_users_table" TO approle USING (TRUE) WITH CHECK  (TRUE);

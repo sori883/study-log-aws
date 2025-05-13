@@ -1,7 +1,7 @@
 CREATE TABLE "study_aws_users_table" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"username" varchar,
-	"display_name" varchar,
+	"display_name" varchar DEFAULT NULL,
 	"email" varchar NOT NULL,
 	"thumbnail_url" varchar,
 	"provider_username" varchar,

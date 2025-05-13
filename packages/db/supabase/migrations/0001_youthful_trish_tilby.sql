@@ -1,1 +1,0 @@
-ALTER TABLE "study_aws_users_table" ALTER COLUMN "display_name" SET DEFAULT NULL;

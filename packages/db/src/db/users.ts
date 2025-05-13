@@ -1,7 +1,6 @@
 import { sql } from "drizzle-orm";
 import { createTable } from "./_table";
-import { pgPolicy, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
-import { approle } from "./role";
+import { timestamp, uuid, varchar } from "drizzle-orm/pg-core";
 
 export const usersTable = createTable("users_table", {
   id: uuid("id").defaultRandom().primaryKey(),
@@ -13,11 +12,4 @@ export const usersTable = createTable("users_table", {
   createdAt: timestamp().defaultNow(),
   updatedAt: timestamp("updated_at").$onUpdate(() => new Date()),
   deletedAt: timestamp("deleted_at").default(sql`NULL`),
-}, (t) => [
-	pgPolicy("policy", {
-		as: "permissive",
-		to: approle,
-		for: 'all',
-		using: sql`TRUE`,
-	}),
-]);
+});

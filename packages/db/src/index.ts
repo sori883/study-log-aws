@@ -20,21 +20,3 @@ type QueryInTransaction<T> = (
 
 const client = postgres(process.env.DATABASE_URL!, { prepare: false });
 export const db =  drizzle(client);
-
-export function rls() {
-  const rls = async <T>(
-    providerUserName: string,
-    txFunc: QueryInTransaction<T>
-  ) =>
-    await db.transaction(async (tx) => {
-      await tx.execute(
-        sql`SELECT set_config('request.jwt.claim.sub', '${sql.raw(
-          providerUserName
-        )}', TRUE)`
-      );
-      
-      return await txFunc(tx);
-    });
-  
-    return rls;
-}

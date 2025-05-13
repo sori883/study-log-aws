@@ -35,6 +35,8 @@
     "@acme/prettier-config": "workspace:^",
     "@acme/tailwind-config": "workspace:^",
     "@acme/tsconfig": "workspace:^",
+    "@conform-to/react": "^1.5.0",
+    "@conform-to/zod": "^1.5.0",
     "@react-router/dev": "^7.2.0",
     "@tailwindcss/vite": "catalog:",
     "@types/node": "catalog:",
