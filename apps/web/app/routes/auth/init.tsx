@@ -4,8 +4,8 @@ import { useForm, getFormProps, getInputProps } from "@conform-to/react";
 import { parseWithZod } from "@conform-to/zod";
 import { Form, redirect } from "react-router";
 import { z } from "zod";
-import { jwtVerifier } from "../../../auth/jwt";
-import { updateInitUser } from "../../db/user/updateInitUser";
+import { getJwtFromCookie } from "~/auth";
+import { updateInitUser } from "~/db/user";
 
 const schema = z.object({
   displayName: z.string().min(1, "表示名は必須です"),
@@ -31,14 +31,16 @@ export async function action({ request }: Route.ActionArgs) {
   const id_token = cookie.parse(request.headers.get("Cookie") || "").id_token;
   if (!id_token) { return redirect("/login"); }
 
-  await jwtVerifier.hydrate();
-  const jwtPayload = await jwtVerifier.verify(id_token);
+  const jwtPayload = await getJwtFromCookie(request);
+  if (!jwtPayload) return redirect("/login");
 
   await updateInitUser({
     username: submission.value.username,
     displayName: submission.value.displayName,
     providerUsername: jwtPayload["cognito:username"],
   });
+
+  return redirect("/appli/");
 }
 
 export default function Init() {

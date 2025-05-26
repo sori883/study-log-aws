@@ -1,5 +1,5 @@
 import type { Context } from "hono";
-import type { JwtPayloadType } from "./auth/jwt";
+import type { JwtPayloadType } from "./app/auth/jwt";
 import type { UserType } from "./app/db/user/getUser";
 
 type Env = {

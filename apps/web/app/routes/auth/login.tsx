@@ -1,6 +1,6 @@
 import { Form, redirect } from "react-router";
 import type { Route } from "../auth/+types/login";
-
+import { cognitoAuthUrl, cognitoQueryParams } from "~/auth";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -10,18 +10,8 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export const action = async ({ request, context }: Route.ActionArgs) => {
-      // Google認証用エンドポイント
-      const cognitoAuthUrl = `https://${process.env.COGNITO_DOMAIN}.auth.${process.env.AWS_REGION}.amazoncognito.com/oauth2/authorize`;
-      const queryParams = new URLSearchParams({
-        client_id: process.env.COGNITO_CLIENT_ID!,
-        response_type: "code",
-        scope: "email openid profile",
-        redirect_uri: process.env.AUTH_CALLBACK_URL!,
-        identity_provider: "Google"
-      });
-
     // Google認証ページにリダイレクト
-    return redirect(`${cognitoAuthUrl}?${queryParams.toString()}`);
+    return redirect(`${cognitoAuthUrl}?${cognitoQueryParams.toString()}`);
 };
 
 export default function Login() {

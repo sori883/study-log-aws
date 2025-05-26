@@ -1,11 +1,9 @@
 import { redirect } from "react-router";
 import type { Route } from "../auth/+types/callback.google";
-import { getUser } from "../../db/user/getUser";
-import { insertUser } from "../../db/user/insertUser";
-import { jwtVerifier } from "../../../auth/jwt";
+import { getUser, insertUser } from "~/db/user";
+import { jwtVerifier, cognitoTokenUrl , cognitoCallbackParams } from "~/auth";
 
-
-export async function loader({ request, context }: Route.LoaderArgs) {
+export async function loader({ request }: Route.LoaderArgs) {
   const requestUrl = new URL(request.url);
   const code = requestUrl.searchParams.get("code");
 
@@ -16,20 +14,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
 
   try {
     // Cognitoトークンエンドポイントに認証コードを送信してトークンを取得
-    const tokenEndpoint = `https://${process.env.COGNITO_DOMAIN}.auth.${process.env.AWS_REGION}.amazoncognito.com/oauth2/token`;
-    const response = await fetch(tokenEndpoint, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: new URLSearchParams({
-        grant_type: "authorization_code",
-        client_id: process.env.COGNITO_CLIENT_ID!,
-        client_secret: process.env.COGNITO_CLIENT_SECRET!,
-        code,
-        redirect_uri: process.env.AUTH_CALLBACK_URL!
-      })
-    });
+    const response = await fetch(cognitoTokenUrl, cognitoCallbackParams(code));
 
     if (!response.ok) {
       throw new Error(`Token request failed: ${response.statusText}`);
@@ -39,15 +24,14 @@ export async function loader({ request, context }: Route.LoaderArgs) {
     const headers = new Headers();
 
     // JWTトークンからユーザデータをDBに登録
-    await jwtVerifier.hydrate();
-    const jwtPayload = await jwtVerifier.verify(tokens.id_token);
+    const jwtPayload = await jwtVerifier(tokens.id_token)
 
     const user = await getUser({email: jwtPayload.email as string});
     if (!user) {
       await insertUser({
-        email: jwtPayload.email as string,
-        thumbnailUrl: jwtPayload.picture as string,
-        providerUsername: jwtPayload["cognito:username"] as string,
+        email: jwtPayload.email,
+        thumbnailUrl: jwtPayload.picture,
+        providerUsername: jwtPayload["cognito:username"],
       });
     }
     
@@ -72,7 +56,7 @@ export async function loader({ request, context }: Route.LoaderArgs) {
     );
 
     // ホームページにリダイレクト
-    return redirect("/", { headers });
+    return redirect("/appli/", { headers });
   } catch (error) {
     console.error("Authentication error:", error);
     // エラーメッセージを表示して、再度ログインページにリダイレクト

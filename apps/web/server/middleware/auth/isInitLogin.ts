@@ -1,19 +1,11 @@
 import { MiddlewareHandler } from "hono";
 import { getCookie, setCookie } from "hono/cookie";
-import { jwtVerifier, JwtPayloadType } from "../../auth/jwt";
-import { getUser, UserType } from "../../app/db/user/getUser";
+import { getUser } from "~/db/user"
+import { cognitoTokenUrl, cognitoRefreshParams, jwtVerifier, JwtPayloadType, TokensType } from "~/auth";
 
-export type TokensType = {
-  id_token: string;
-  access_token: string;
-  expires_in: number;
-  token_type: string;
-}
-
-export const authMiddleware: MiddlewareHandler<{
+export const isInitLogin: MiddlewareHandler<{
   Variables: {
     jwt: JwtPayloadType;
-    user: UserType;
   };
 }> = async (c, next) => {
   // リフレッシュトークンが存在しない場合はloginにリダイレクトする
@@ -26,26 +18,11 @@ export const authMiddleware: MiddlewareHandler<{
 
   // id_tokenがない場合はリフレッシュトークンを使用して取得
   if (!id_token) {
-    // refresh_tokenを使用してid_tokenを更新するためのエンドポイント
-    const tokenEndpoint = `https://${process.env.COGNITO_DOMAIN}.auth.${process.env.AWS_REGION}.amazoncognito.com/oauth2/token`;
-
     // refresh_tokenを使用してid_tokenを更新す
     try {
-      const response = await fetch(tokenEndpoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: new URLSearchParams({
-          grant_type: "refresh_token",
-          client_id: process.env.COGNITO_CLIENT_ID!,
-          client_secret: process.env.COGNITO_CLIENT_SECRET!,
-          redirect_uri: process.env.AUTH_CALLBACK_URL!,
-          refresh_token,
-        })
-      });
+      const response = await fetch(cognitoTokenUrl, cognitoRefreshParams(refresh_token));
   
-      // レスポンスエラー
+      // トークン更新エラー
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(`トークン更新エラー: ${JSON.stringify(errorData)}`);
@@ -82,18 +59,13 @@ export const authMiddleware: MiddlewareHandler<{
   };
 
   if (id_token) {
-    await jwtVerifier.hydrate();
-    const jwtPayload = await jwtVerifier.verify(id_token);
-    // jwtPayloadをRemixに渡すためにコンテキストに詰める
-    c.set("jwt", jwtPayload);
-    // ユーザ情報を取得して、usernameが未設定だったらリダイレクト
-    const user = await getUser({email: jwtPayload.email as string})
-    if (!user?.username) {
-      return c.redirect("/auth/init");
+    const jwtPayload = await jwtVerifier(id_token);
+    // ユーザ情報を取得して、usernameが設定済みだったらアプリ画面にリダイレクト
+    const user = await getUser({email: jwtPayload.email})
+    if (user?.username) {
+      return c.redirect("/appli/");
     }
-    c.set("user", user);
   };
 
-
   await next();
-};
+}
