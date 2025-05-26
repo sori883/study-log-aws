@@ -8,6 +8,27 @@
       "when": 1747141313865,
       "tag": "0000_tan_sprite",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1748263210072,
+      "tag": "0001_steady_bug",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1748264885968,
+      "tag": "0002_silent_killer_shrike",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1748265619679,
+      "tag": "0003_lyrical_hellion",
+      "breakpoints": true
     }
   ]
 }
