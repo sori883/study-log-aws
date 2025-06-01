@@ -9,14 +9,18 @@ const updateInitUserSchema = z.object({
 
 
 export async function updateInitUser(data: z.infer<typeof updateInitUserSchema>) {
-  const v = updateInitUserSchema.parse(data);
+  try {
+    const v = updateInitUserSchema.parse(data);
 
-  await db
-    .update(schema.usersTable)
-    .set({
-      username: v.username,
-      providerUsername: v.providerUsername,
-      displayName: v.displayName,
-    })
-    .where(eq(schema.usersTable.providerUsername, v.providerUsername));
+    await db
+      .update(schema.usersTable)
+      .set({
+        username: v.username,
+        providerUsername: v.providerUsername,
+        displayName: v.displayName,
+      })
+      .where(eq(schema.usersTable.providerUsername, v.providerUsername));
+  } catch (error) {
+    console.error("Error inserting user:", error);
+  };
 }

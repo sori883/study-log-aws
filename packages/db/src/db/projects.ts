@@ -3,6 +3,7 @@ import { createTable } from "./_table";
 import { timestamp, uuid, varchar } from "drizzle-orm/pg-core";
 import { usersTable } from "./users"
 import { tasksTable } from "./tasks";
+import { projectToWeekly } from "./weeklys";
 
 export const projectColorEnum = [
   "red",
@@ -42,4 +43,5 @@ export const projectsRelations = relations(projectsTable, ({ one, many }) => ({
     references: [usersTable.id],
   }),
   tasks: many(tasksTable),
+  projectToWeekly: many(projectToWeekly)
 }));

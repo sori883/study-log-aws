@@ -8,12 +8,16 @@ const getUserSchema = z.object({
 });
 
 export async function getUser(data: z.infer<typeof getUserSchema>) {
-  const v = getUserSchema.parse(data);
-  const user = await db
-    .select()
-    .from(schema.usersTable)
-    .where(eq(schema.usersTable.email, v.email))
-    .limit(1);
+  try {
+    const v = getUserSchema.parse(data);
+    const user = await db
+      .select()
+      .from(schema.usersTable)
+      .where(eq(schema.usersTable.email, v.email))
+      .limit(1);
 
-    return user.length > 0 ? user[0] : null;
+      return user.length > 0 ? user[0] : null;
+  } catch (error) {
+    console.error("Error inserting user:", error);
+  };
 }

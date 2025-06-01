@@ -9,13 +9,17 @@ const insertUserSchema = z.object({
 
 
 export async function insertUser(data: z.infer<typeof insertUserSchema>) {
-  const v = insertUserSchema.parse(data);
+  try {
+    const v = insertUserSchema.parse(data);
 
-  await db
-    .insert(schema.usersTable)
-    .values({
-      email: v.email,
-      thumbnailUrl: v.thumbnailUrl ? v.thumbnailUrl : null,
-      providerUsername: v.providerUsername,
-    });
+    await db
+      .insert(schema.usersTable)
+      .values({
+        email: v.email,
+        thumbnailUrl: v.thumbnailUrl ? v.thumbnailUrl : null,
+        providerUsername: v.providerUsername,
+      });
+  } catch (error) {
+    console.error("Error inserting user:", error);
+  };
 }
