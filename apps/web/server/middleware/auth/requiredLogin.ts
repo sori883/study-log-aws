@@ -23,7 +23,6 @@ export const requiredLogin: MiddlewareHandler<{
     // refresh_tokenを使用してid_tokenを更新す
     try {
       const response = await fetch(cognitoTokenUrl, cognitoRefreshParams(refresh_token));
-
       // トークン更新エラー
       if (!response.ok) {
         const errorData = await response.json();
@@ -69,9 +68,6 @@ export const requiredLogin: MiddlewareHandler<{
     const user = await getUser({email: jwtPayload.email})
     if (!user?.username) {
       return c.redirect("/auth/init");
-    } else if (user?.username && c.req.path === "/auth/init") {
-      c.set("user", user);
-      await next();
     }
     c.set("user", user);
   };
