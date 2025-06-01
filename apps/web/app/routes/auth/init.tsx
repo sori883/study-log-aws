@@ -8,8 +8,8 @@ import { getJwtFromCookie } from "~/auth";
 import { updateInitUser } from "~/db/user";
 
 const schema = z.object({
-  displayName: z.string().min(1, "表示名は必須です"),
-  username: z.string().min(1, "ユーザ名は必須です"),
+  displayName: z.string({ required_error: "表示名は必須です"}).min(1),
+  username: z.string({ required_error: "ユーザ名は必須です"}).min(1),
 });
 
 export function meta({}: Route.MetaArgs) {

@@ -4,7 +4,6 @@ import { timestamp, uuid, varchar } from "drizzle-orm/pg-core";
 import { projectsTable } from "./projects";
 import { tasksTable } from "./tasks";
 import { timersTable } from "./timer";
-import { timerSessionsTable } from "./timerSessions";
 
 export const usersTable = createTable("users_table", {
   id: uuid("id").defaultRandom().primaryKey(),
@@ -22,5 +21,4 @@ export const usersRelations = relations(usersTable, ({ many }) => ({
 	projects: many(projectsTable),
   tasks: many(tasksTable),
   timers: many(timersTable),
-  timerSessions: many(timerSessionsTable),
 }));

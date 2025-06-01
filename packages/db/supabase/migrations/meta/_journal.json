@@ -29,6 +29,13 @@
       "when": 1748265619679,
       "tag": "0003_lyrical_hellion",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1748781499433,
+      "tag": "0004_equal_boomerang",
+      "breakpoints": true
     }
   ]
 }
